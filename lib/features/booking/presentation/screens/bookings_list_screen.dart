@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../config/app_config.dart';
 import '../../domain/models/booking.dart';
 import 'booking_detail_screen.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookingsListScreen extends StatefulWidget {

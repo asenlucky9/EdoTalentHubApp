@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:hive/hive.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../artists/domain/models/artist.dart';
@@ -1235,9 +1235,9 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
       // Save to Hive local storage
       final box = await Hive.openBox<Booking>('bookings');
       await box.add(booking);
+      
       // Save to Firestore
-      // await FirebaseFirestore.instance.collection('bookings').add(booking.toJson());
-      // Temporarily disabled for web compatibility
+      await FirebaseFirestore.instance.collection('bookings').add(booking.toJson());
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Booking saved successfully!')),

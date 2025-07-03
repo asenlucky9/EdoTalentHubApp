@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../config/app_config.dart';
-// import '../../../../shared/services/firebase_user_service.dart';
-// import 'role_selection_screen.dart';
+import '../../../../shared/services/firebase_user_service.dart';
+import 'role_selection_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -23,13 +23,44 @@ class _AuthScreenState extends State<AuthScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() { _isLoading = true; _error = null; });
     
-    // Temporarily show success message for demo
-    await Future.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      setState(() { _isLoading = false; });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Authentication temporarily disabled for web compatibility')),
-      );
+    try {
+      if (_isSignUp) {
+        // Sign up
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+        
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+          );
+        }
+      } else {
+        // Sign in
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+        
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+          );
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() { 
+        _isLoading = false; 
+        _error = e.message ?? 'Authentication failed';
+      });
+    } catch (e) {
+      setState(() { 
+        _isLoading = false; 
+        _error = 'An unexpected error occurred';
+      });
     }
   }
 

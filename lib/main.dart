@@ -11,6 +11,7 @@ import 'features/auth/presentation/screens/auth_screen.dart';
 import 'features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'features/booking/domain/models/booking.dart';
 import 'shared/providers/user_provider.dart';
+import 'shared/services/firebase_service.dart';
 import 'features/welcome/presentation/screens/welcome_screen.dart';
 
 void main() async {
@@ -24,6 +25,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
+  // Initialize Firebase services
+  await FirebaseService.initialize();
   
   runApp(const ProviderScope(child: EdoTalentHubApp()));
 }
@@ -39,7 +43,22 @@ class EdoTalentHubApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
-      home: const WelcomeScreen(),
+      home: Consumer(
+        builder: (context, ref, child) {
+          final authState = ref.watch(authUserProvider);
+          
+          return authState.when(
+            data: (user) {
+              if (user == null) {
+                return const WelcomeScreen();
+              }
+              return const DashboardScreen();
+            },
+            loading: () => const SplashScreen(),
+            error: (error, stack) => const WelcomeScreen(),
+          );
+        },
+      ),
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),

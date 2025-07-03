@@ -1,28 +1,48 @@
 import 'package:flutter/foundation.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:typed_data';
 
 class FirebaseService {
-  // Temporarily disabled for web compatibility
-  // static FirebaseAuth? _auth;
-  // static FirebaseFirestore? _firestore;
-  // static FirebaseStorage? _storage;
-  // static FirebaseMessaging? _messaging;
+  static FirebaseAuth? _auth;
+  static FirebaseFirestore? _firestore;
+  static FirebaseStorage? _storage;
+  static FirebaseMessaging? _messaging;
 
   // Getters for Firebase instances
-  // static FirebaseAuth get auth => _auth!;
-  // static FirebaseFirestore get firestore => _firestore!;
-  // static FirebaseStorage get storage => _storage!;
-  // static FirebaseMessaging get messaging => _messaging!;
+  static FirebaseAuth get auth => _auth!;
+  static FirebaseFirestore get firestore => _firestore!;
+  static FirebaseStorage get storage => _storage!;
+  static FirebaseMessaging get messaging => _messaging!;
 
   // Initialize Firebase services
   static Future<void> initialize() async {
-    // Temporarily disabled for web compatibility
-    debugPrint('Firebase services temporarily disabled for web compatibility');
+    try {
+      // Initialize Firebase Auth
+      _auth = FirebaseAuth.instance;
+      
+      // Initialize Firestore
+      _firestore = FirebaseFirestore.instance;
+      
+      // Initialize Storage
+      _storage = FirebaseStorage.instance;
+      
+      // Initialize Messaging
+      _messaging = FirebaseMessaging.instance;
+      
+      // Request notification permissions
+      await _requestNotificationPermissions();
+      
+      // Enable offline persistence
+      await enableOfflinePersistence();
+      
+      debugPrint('Firebase services initialized successfully');
+    } catch (e) {
+      debugPrint('Error initializing Firebase services: $e');
+    }
   }
 
   // Request notification permissions
@@ -45,16 +65,16 @@ class FirebaseService {
   }
 
   // Get current user
-  static dynamic get currentUser => null;
+  static User? get currentUser => _auth?.currentUser;
 
   // Check if user is signed in
-  static bool get isSignedIn => false;
+  static bool get isSignedIn => _auth?.currentUser != null;
 
   // Get user ID
-  static String? get userId => null;
+  static String? get userId => _auth?.currentUser?.uid;
 
   // Get user email
-  static String? get userEmail => null;
+  static String? get userEmail => _auth?.currentUser?.email;
 
   // Sign out
   static Future<void> signOut() async {
