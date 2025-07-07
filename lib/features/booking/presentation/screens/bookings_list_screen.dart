@@ -65,24 +65,27 @@ class _BookingsListScreenState extends State<BookingsListScreen> {
                 )
               : RefreshIndicator(
                   onRefresh: _loadBookings,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: _bookings.length,
-                    itemBuilder: (context, index) {
-                      final booking = _bookings[index];
-                      return _BookingCard(
-                        booking: booking,
-                        onTap: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookingDetailScreen(booking: booking),
-                            ),
-                          );
-                          _loadBookings(); // Refresh after returning
-                        },
-                      );
-                    },
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _bookings.length,
+                      itemBuilder: (context, index) {
+                        final booking = _bookings[index];
+                        return _BookingCard(
+                          booking: booking,
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookingDetailScreen(booking: booking),
+                              ),
+                            );
+                            _loadBookings(); // Refresh after returning
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
     );

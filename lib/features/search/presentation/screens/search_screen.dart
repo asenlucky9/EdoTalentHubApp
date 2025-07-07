@@ -131,29 +131,37 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     ),
     Artist(
       id: '6',
-      name: 'Guitar Master',
+      name: 'Akobeghian',
       category: 'Musician',
       location: 'Benin City',
-      rating: 4.7,
-      reviewCount: 89,
-      price: 60000,
-      imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop',
-      bio: 'Professional guitarist with 8+ years experience.',
-      genres: ['Jazz', 'Blues', 'Rock'],
-      experience: '8 years',
+      rating: 4.8,
+      reviewCount: 200,
+      price: 120000,
+      imageUrl: 'assets/images/akobeghian.jpg',
+      bio: 'Akobeghian has been active since the early 1990s, merging Edo-language storytelling with highlife rhythms. His music often carries spiritual, cultural, and ancestral themes—performed with theatricality and pride for Benin traditions. Hits like Ewemade, Umanatoumwen, and Ifinakhuenode are beloved at cultural events and reflect his mission to preserve Edo heritage. Albums: Begibegi (2024), Owonwon (2023), Oyiya (2023), Tesu Hukua (2023), Oseh (2023), Akobe in America (Live, 2023), Ewemade (2022), Umanatuomwen (2015), 10 Years Anniversary (2022), Ibah (2022), Aboninki (2022).',
+      genres: ['Highlife', 'Edo Storytelling'],
+      experience: 'Since early 1990s',
+      videoUrls: [
+        'https://www.youtube.com/watch?v=uZVfAEs-0gs&list=RDuZVfAEs-0gs&start_radio=1',
+        'https://www.youtube.com/watch?v=FKsUPsErNq8&list=RDFKsUPsErNq8&start_radio=1',
+      ],
     ),
     Artist(
       id: '7',
-      name: 'Piano Virtuoso',
+      name: 'Adviser Nowamagbe',
       category: 'Musician',
-      location: 'Ekpoma',
-      rating: 4.9,
-      reviewCount: 156,
-      price: 75000,
-      imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
-      bio: 'Classical and contemporary piano specialist.',
-      genres: ['Classical', 'Contemporary', 'Jazz'],
-      experience: '12 years',
+      location: 'Benin City',
+      rating: 4.7,
+      reviewCount: 150,
+      price: 100000,
+      imageUrl: 'assets/images/nowamagbe.jpg',
+      bio: 'Adviser Nowamagbe, known as "Masses Chairman" and Music Ambassador for Democracy in Nigeria, uses music to critique government corruption and social issues. His titles like "Questions and Assignment for New Oshiomole" and "Mr. Subsidy" especially target Edo State governance and national policies, pulsating with protest narratives.\n\nAlbums/EPs: Fool At 40 (album), Democracy On Trial (EP), Egiau People (album).',
+      genres: ['Highlife', 'Protest', 'Edo Social Commentary'],
+      experience: 'Since 1990s',
+      videoUrls: [
+        'https://www.youtube.com/watch?v=pa_Nhrrrytg&list=RDpa_Nhrrrytg&start_radio=1&t=15s',
+        'https://www.youtube.com/watch?v=t72eDaVN7Cg&list=RDt72eDaVN7Cg&start_radio=1',
+      ],
     ),
     Artist(
       id: '8',
@@ -324,13 +332,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : _filteredArtists.isEmpty
                       ? Center(child: Text('No results found', style: TextStyle(color: AppConfig.textSecondaryColor)))
-                      : ListView.builder(
-                          itemCount: _filteredArtists.length,
-                          itemBuilder: (context, index) {
-                            final artist = _filteredArtists[index];
-                            return _buildArtistListCard(artist);
-                          },
-              ),
+                      : Scrollbar(
+                          thumbVisibility: true,
+                          thickness: 8,
+                          radius: const Radius.circular(8),
+                          interactive: true,
+                          child: ListView.builder(
+                            itemCount: _filteredArtists.length,
+                            itemBuilder: (context, index) {
+                              final artist = _filteredArtists[index];
+                              return _buildArtistListCard(artist);
+                            },
+                          ),
+                        ),
             ),
           ],
         ),
@@ -363,12 +377,27 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   },
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(
-            artist.imageUrl,
-            width: 56,
-            height: 56,
-            fit: BoxFit.cover,
-          ),
+          child: artist.imageUrl.startsWith('http')
+              ? Image.network(
+                  artist.imageUrl,
+                  width: 56,
+                  height: 56,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  artist.imageUrl,
+                  width: 56,
+                  height: 56,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[300],
+                    child: Icon(
+                      Icons.music_note,
+                      color: Colors.grey[600],
+                      size: 40,
+                    ),
+                  ),
+                ),
         ),
         title: Row(
           children: [

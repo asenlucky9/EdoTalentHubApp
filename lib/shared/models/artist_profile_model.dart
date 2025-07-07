@@ -205,8 +205,8 @@ class ArtistProfileModel {
       'availability': availability,
       'tags': tags,
       'metadata': metadata,
-      'createdAt': (data['createdAt'] as dynamic).toDate(),
-      'updatedAt': (data['updatedAt'] as dynamic).toDate(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 

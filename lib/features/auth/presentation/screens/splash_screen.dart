@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+                                                                                                                                                           import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/app_config.dart';
 import '../../../welcome/presentation/screens/welcome_screen.dart';
+import 'auth_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -78,12 +79,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      // TODO: Navigate to login screen
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Login screen coming soon!'),
-                          backgroundColor: AppConfig.primaryColor,
-                        ),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AuthScreen()),
                       );
                     },
                     borderRadius: BorderRadius.circular(25),

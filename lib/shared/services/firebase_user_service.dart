@@ -86,12 +86,20 @@ class FirebaseUserService {
     required String userId,
     required String email,
     required String role,
+    required String fullName,
+    required String phoneNumber,
+    required String location,
+    required String city,
   }) async {
     try {
       await _firestore.collection('users').doc(userId).set({
         'id': userId,
         'email': email,
         'role': role,
+        'fullName': fullName,
+        'phoneNumber': phoneNumber,
+        'location': location,
+        'city': city,
         'status': 'active',
         'isEmailVerified': false,
         'isPhoneVerified': false,
@@ -99,7 +107,6 @@ class FirebaseUserService {
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      
       debugPrint('User profile created successfully: $userId');
     } catch (e) {
       debugPrint('Error creating user profile: $e');

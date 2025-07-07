@@ -55,13 +55,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     });
 
     try {
-      // Create user profile in Firestore
-      await FirebaseUserService.createUserProfile(
-        userId: widget.user.uid,
-        email: widget.user.email ?? '',
-        role: role.toString().split('.').last,
-      );
-
       // Navigate to profile creation
       if (mounted) {
         Navigator.pushReplacement(

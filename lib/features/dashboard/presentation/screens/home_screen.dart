@@ -72,239 +72,222 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
             // Refresh the UI
           });
         },
-        child: CustomScrollView(
+        child: Scrollbar(
           controller: _scrollController,
-          slivers: [
-            // Professional Header with Edo Cultural Elements
-            SliverAppBar(
-              expandedHeight: 220,
-              floating: false,
-              pinned: true,
-              backgroundColor: AppConfig.primaryColor,
-              elevation: 0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF1B5E20),
-                        Color(0xFF2E7D32),
-                        Color(0xFF388E3C),
-                      ],
+          thumbVisibility: true,
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              // Professional Header with Edo Cultural Elements
+              SliverAppBar(
+                expandedHeight: 220,
+                floating: false,
+                pinned: true,
+                backgroundColor: AppConfig.primaryColor,
+                elevation: 0,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF1B5E20),
+                          Color(0xFF2E7D32),
+                          Color(0xFF388E3C),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: SafeArea(
-          child: Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                          Row(
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                Container(
-                                padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Icon(
-                                  Icons.celebration,
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Icon(
+                                      Icons.celebration,
+                                      color: Colors.white,
+                                      size: 24,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'EdoTalentHub',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Professional Entertainment Booking Platform',
+                                          style: TextStyle(
+                                            color: Colors.white.withOpacity(0.9),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Trust Badge
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.verified,
+                                          color: Colors.white,
+                                          size: 16,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Verified',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              
+                              // Personalized Welcome Message
+                              Text(
+                                '$greeting, $userName! 👋',
+                                style: TextStyle(
                                   color: Colors.white,
-                                  size: 24,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              const SizedBox(width: 16),
-                              Expanded(
+                              const SizedBox(height: 8),
+                              Text(
+                                'Ready to find the perfect talent for your event?',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              
+                              // Enhanced Search Bar with Cultural Elements
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 8),
+                                    ),
+                                  ],
+                                ),
+                                child: TextField(
+                                  controller: _searchController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    HapticFeedback.lightImpact();
+                                    setState(() {
+                                      _searchController.text = 'Searching...';
+                                    });
+                                    await Future.delayed(const Duration(milliseconds: 300));
+                                    setState(() {
+                                      _searchController.clear();
+                                    });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SearchScreen(),
+                                      ),
+                                    );
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Search for Edo talents, events, cultural groups...',
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey[500],
+                                      fontSize: 15,
+                                    ),
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: AppConfig.primaryColor,
+                                      size: 22,
+                                    ),
+                                    suffixIcon: Container(
+                                      margin: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: AppConfig.primaryColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Text(
+                                        'Search',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _buildPromoBanner(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                                      'EdoTalentHub',
-                        style: TextStyle(
-                          color: Colors.white,
-                                        fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                                        letterSpacing: 0.5,
-                        ),
-                      ),
-                                    const SizedBox(height: 4),
-                      Text(
-                                      'Professional Entertainment Booking Platform',
-                        style: TextStyle(
-                                        color: Colors.white.withOpacity(0.9),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // Trust Badge
-                      Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.verified,
-                                      color: Colors.white,
-                                      size: 16,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Verified',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          
-                          // Personalized Welcome Message
-                          Text(
-                            '$greeting, $userName! 👋',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Ready to find the perfect talent for your event?',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          
-                          // Enhanced Search Bar with Cultural Elements
-                          Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 20,
-                                  offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          readOnly: true,
-                              onTap: () async {
-                                HapticFeedback.lightImpact();
-                                setState(() {
-                                  _searchController.text = 'Searching...';
-                                });
-                                await Future.delayed(const Duration(milliseconds: 300));
-                                setState(() {
-                                  _searchController.clear();
-                                });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SearchScreen(),
-                              ),
-                            );
-                          },
-                          decoration: InputDecoration(
-                                hintText: 'Search for Edo talents, events, cultural groups...',
-                                hintStyle: TextStyle(
-                                  color: Colors.grey[500],
-                                  fontSize: 15,
-                                ),
-                            border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: AppConfig.primaryColor,
-                                  size: 22,
-                                ),
-                                suffixIcon: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: AppConfig.primaryColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: const Text(
-                                    'Search',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Flexible(child: _buildPromoBanner()),
+                      _buildQuickStatsSection(),
+                      const SizedBox(height: 32),
+                      _buildCulturalEventsBanner(),
+                      const SizedBox(height: 32),
+                      _buildCategoriesSection(),
+                      // Add more sections as needed
                     ],
                   ),
                 ),
-                  ),
-                ),
               ),
-            ),
-            
-            // Main Content
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    // Enhanced Quick Stats Section with Trust Indicators
-                    _buildQuickStatsSection(),
-                    const SizedBox(height: 32),
-                    
-                    // Cultural Events Banner
-                    _buildCulturalEventsBanner(),
-                    const SizedBox(height: 32),
-                    
-                    // Enhanced Categories Section
-                    _buildCategoriesSection(),
-                    const SizedBox(height: 40),
-                    
-                    // Featured Artists Section with Quality Badges
-                    _buildEnhancedFeaturedArtistsSection(),
-                    const SizedBox(height: 40),
-                    
-                    // Trust & Quality Section
-                    _buildTrustQualitySection(),
-                    const SizedBox(height: 40),
-                    
-                    // User Quick Actions Section
-                    const UserQuickActions(),
-                    const SizedBox(height: 32),
-                    
-                    // Enhanced Quick Actions Section
-                    _buildEnhancedQuickActionsSection(),
-                    const SizedBox(height: 24),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -379,29 +362,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
               color: AppConfig.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.security,
-                  color: AppConfig.primaryColor,
-                  size: 16,
-                ),
-                const SizedBox(width: 8),
-                      Text(
-                  'Escrow Protected Payments • Professional Contracts • Quality Guaranteed',
-                        style: TextStyle(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.security,
                     color: AppConfig.primaryColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+                    size: 16,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Text(
+                    'Escrow Protected Payments • Professional Contracts • Quality Guaranteed',
+                    style: TextStyle(
+                      color: AppConfig.primaryColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
-                      ),
-                    ],
-                  ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -447,10 +433,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
               children: [
                 Text(
                   'Edo Cultural Events',
-                    style: TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -461,9 +447,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                     fontSize: 14,
                   ),
                 ),
-                    ],
-                  ),
-                ),
+              ],
+            ),
+          ),
           Icon(
             Icons.arrow_forward_ios,
             color: Colors.white,
@@ -482,16 +468,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   'Browse Categories',
-                        style: TextStyle(
+                  style: TextStyle(
                     fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: AppConfig.textPrimaryColor,
-                        ),
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppConfig.textPrimaryColor,
+                  ),
+                ),
                 Text(
                   'Find the right talent for your event',
                   style: TextStyle(
@@ -499,17 +485,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                     color: AppConfig.textSecondaryColor,
                     fontWeight: FontWeight.w500,
                   ),
-                      ),
-                    ],
-                  ),
+                ),
+              ],
+            ),
             TextButton(
               onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SearchScreen(),
-                          ),
-                        );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchScreen(),
+                  ),
+                );
               },
               child: Text(
                 'View All',
@@ -557,7 +543,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
             Container(
               width: 60,
               height: 60,
-        decoration: BoxDecoration(
+              decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -568,15 +554,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
               ),
             ),
             const SizedBox(height: 8),
-              Text(
+            Text(
               label,
-                style: TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                  color: AppConfig.textPrimaryColor,
-                ),
-                textAlign: TextAlign.center,
+                color: AppConfig.textPrimaryColor,
               ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
@@ -634,9 +620,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
               },
               child: Text(
                 'View All',
-          style: TextStyle(
+                style: TextStyle(
                   color: AppConfig.primaryColor,
-            fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -674,35 +660,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
       },
       child: Container(
         width: 200,
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        margin: const EdgeInsets.only(right: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.grey.withOpacity(0.1)),
-        boxShadow: [
-          BoxShadow(
+          boxShadow: [
+            BoxShadow(
               color: Colors.black.withOpacity(0.08),
               blurRadius: 20,
               offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
             ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
               child: Stack(
                 children: [
                   Image.network(
-              artist.imageUrl,
-              height: 110,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+                    artist.imageUrl,
+                    height: 110,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                   Positioned(
                     top: 12,
                     right: 12,
@@ -769,51 +755,51 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  artist.name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                    color: AppConfig.textPrimaryColor,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  artist.category,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppConfig.textSecondaryColor,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 14),
-                    const SizedBox(width: 4),
-                    Text(
-                      artist.rating.toString(),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: AppConfig.textSecondaryColor,
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        artist.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: AppConfig.textPrimaryColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '₦${_formatPrice(artist.price)}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: AppConfig.primaryColor,
-                  ),
-                ),
+                      const SizedBox(height: 4),
+                      Text(
+                        artist.category,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppConfig.textSecondaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Icon(Icons.star, color: Colors.amber, size: 14),
+                          const SizedBox(width: 4),
+                          Text(
+                            artist.rating.toString(),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppConfig.textSecondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '₦${_formatPrice(artist.price)}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppConfig.primaryColor,
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
@@ -839,14 +825,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-                  ),
-                ),
+              ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );
@@ -1102,16 +1088,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
         return [
           Artist(
             id: 'm1',
-            name: 'Guitar Master',
+            name: 'Akobeghian',
             category: 'Musician',
             location: 'Benin City',
-            rating: 4.7,
-            reviewCount: 89,
-            price: 60000,
-            imageUrl: _artistImages[5],
-            bio: 'Professional guitarist with 8+ years experience.',
-            genres: ['Jazz', 'Blues', 'Rock'],
-            experience: '8 years',
+            rating: 4.8,
+            reviewCount: 200,
+            price: 120000,
+            imageUrl: 'assets/images/akobeghian.jpg',
+            bio: 'Akobeghian has been active since the early 1990s, merging Edo-language storytelling with highlife rhythms. His music often carries spiritual, cultural, and ancestral themes—performed with theatricality and pride for Benin traditions. Hits like Ewemade, Umanatoumwen, and Ifinakhuenode are beloved at cultural events and reflect his mission to preserve Edo heritage. Albums: Begibegi (2024), Owonwon (2023), Oyiya (2023), Tesu Hukua (2023), Oseh (2023), Akobe in America (Live, 2023), Ewemade (2022), Umanatuomwen (2015), 10 Years Anniversary (2022), Ibah (2022), Aboninki (2022).',
+            genres: ['Highlife', 'Edo Storytelling'],
+            experience: 'Since early 1990s',
           ),
           Artist(
             id: 'm2',
@@ -1353,7 +1339,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
         ],
       ),
       child: Row(
-          children: [
+        children: [
           Icon(Icons.campaign, color: Colors.white, size: 22),
           const SizedBox(width: 12),
           Expanded(
@@ -1366,9 +1352,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+            ),
+          ),
+        ],
       ),
     );
   }

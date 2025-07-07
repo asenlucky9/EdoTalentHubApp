@@ -42,26 +42,39 @@ class ArtistCard extends StatelessWidget {
                   Container(
                     height: 120,
                     width: double.infinity,
-                    child: CachedNetworkImage(
-                      imageUrl: artist.imageUrl,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[300],
-                        child: Icon(
-                          Icons.music_note,
-                          color: Colors.grey[600],
-                          size: 40,
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[300],
-                        child: Icon(
-                          Icons.music_note,
-                          color: Colors.grey[600],
-                          size: 40,
-                        ),
-                      ),
-                    ),
+                    child: artist.imageUrl.startsWith('http')
+                        ? CachedNetworkImage(
+                            imageUrl: artist.imageUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.music_note,
+                                color: Colors.grey[600],
+                                size: 40,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.music_note,
+                                color: Colors.grey[600],
+                                size: 40,
+                              ),
+                            ),
+                          )
+                        : Image.asset(
+                            artist.imageUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: Colors.grey[300],
+                              child: Icon(
+                                Icons.music_note,
+                                color: Colors.grey[600],
+                                size: 40,
+                              ),
+                            ),
+                          ),
                   ),
                   // Verified Badge
                   if (artist.isVerified)

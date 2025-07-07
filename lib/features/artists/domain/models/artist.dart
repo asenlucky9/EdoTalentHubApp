@@ -19,6 +19,7 @@ class Artist {
   final List<String> languages;
   final String? website;
   final List<String> socialMedia;
+  final List<String> videoUrls;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -43,6 +44,7 @@ class Artist {
     this.languages = const ['English'],
     this.website,
     this.socialMedia = const [],
+    this.videoUrls = const [],
     DateTime? createdAt,
     DateTime? updatedAt,
   })  : createdAt = createdAt ?? DateTime.now(),
@@ -70,6 +72,7 @@ class Artist {
       languages: List<String>.from(json['languages'] ?? ['English']),
       website: json['website'] as String?,
       socialMedia: List<String>.from(json['socialMedia'] ?? []),
+      videoUrls: List<String>.from(json['videoUrls'] ?? []),
       createdAt: json['createdAt'] != null 
           ? DateTime.parse(json['createdAt'] as String)
           : null,
@@ -101,6 +104,7 @@ class Artist {
       'languages': languages,
       'website': website,
       'socialMedia': socialMedia,
+      'videoUrls': videoUrls,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -127,6 +131,7 @@ class Artist {
     List<String>? languages,
     String? website,
     List<String>? socialMedia,
+    List<String>? videoUrls,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -151,6 +156,7 @@ class Artist {
       languages: languages ?? this.languages,
       website: website ?? this.website,
       socialMedia: socialMedia ?? this.socialMedia,
+      videoUrls: videoUrls ?? this.videoUrls,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

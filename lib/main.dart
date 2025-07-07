@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'config/app_config.dart';
 import 'config/app_theme.dart';
@@ -29,6 +30,9 @@ void main() async {
   // Initialize Firebase services
   await FirebaseService.initialize();
   
+  // Sign out user for testing
+  await FirebaseAuth.instance.signOut();
+  
   runApp(const ProviderScope(child: EdoTalentHubApp()));
 }
 
@@ -50,12 +54,12 @@ class EdoTalentHubApp extends ConsumerWidget {
           return authState.when(
             data: (user) {
               if (user == null) {
-                return const WelcomeScreen();
+                return const AuthScreen();
               }
               return const DashboardScreen();
             },
             loading: () => const SplashScreen(),
-            error: (error, stack) => const WelcomeScreen(),
+            error: (error, stack) => const AuthScreen(),
           );
         },
       ),

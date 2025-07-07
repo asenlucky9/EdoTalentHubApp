@@ -286,115 +286,118 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         foregroundColor: Colors.white,
         elevation: 0,
       ),
-      body: _showReviewPage ? _buildReviewPage() : SingleChildScrollView(
-        child: Column(
-          children: [
-            // Step Indicator
-            _buildStepIndicator(),
-            // Artist Info Header
-            _buildArtistHeader(),
-            // Artist Availability
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: [
-                  Icon(
-                    widget.artist.isAvailable ? Icons.check_circle : Icons.cancel,
-                    color: widget.artist.isAvailable ? Colors.green : Colors.red,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    widget.artist.isAvailable ? 'Available for Booking' : 'Not Available',
-                    style: TextStyle(
-                      color: widget.artist.isAvailable ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Date-specific Availability
-            if (widget.artist.isAvailable)
+      body: _showReviewPage ? _buildReviewPage() : Scrollbar(
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Step Indicator
+              _buildStepIndicator(),
+              // Artist Info Header
+              _buildArtistHeader(),
+              // Artist Availability
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Row(
                   children: [
                     Icon(
-                      _isDateAvailable ? Icons.event_available : Icons.event_busy,
-                      color: _isDateAvailable ? Colors.green : Colors.red,
+                      widget.artist.isAvailable ? Icons.check_circle : Icons.cancel,
+                      color: widget.artist.isAvailable ? Colors.green : Colors.red,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      _isDateAvailable ? 'Available on selected date' : 'Not available on selected date',
+                      widget.artist.isAvailable ? 'Available for Booking' : 'Not Available',
                       style: TextStyle(
-                        color: _isDateAvailable ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        color: widget.artist.isAvailable ? Colors.green : Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
-                    if (!_isDateAvailable)
-                      const SizedBox(width: 12),
-                    if (!_isDateAvailable)
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Send Inquiry'),
-                              content: const Text('We will notify the artist about your interest for this date. You will be contacted if the artist becomes available.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        child: const Text('Ask for Availability'),
-                      ),
                   ],
                 ),
               ),
-            // Booking Form (only if available and date is available)
-            if (widget.artist.isAvailable && _isDateAvailable)
-              _buildBookingForm()
-            else if (widget.artist.isAvailable && !_isDateAvailable)
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  'This artist is not available on the selected date. You can ask for availability or choose another date.',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+              // Date-specific Availability
+              if (widget.artist.isAvailable)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                  child: Row(
+                    children: [
+                      Icon(
+                        _isDateAvailable ? Icons.event_available : Icons.event_busy,
+                        color: _isDateAvailable ? Colors.green : Colors.red,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        _isDateAvailable ? 'Available on selected date' : 'Not available on selected date',
+                        style: TextStyle(
+                          color: _isDateAvailable ? Colors.green : Colors.red,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                      if (!_isDateAvailable)
+                        const SizedBox(width: 12),
+                      if (!_isDateAvailable)
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Send Inquiry'),
+                                content: const Text('We will notify the artist about your interest for this date. You will be contacted if the artist becomes available.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: const Text('Ask for Availability'),
+                        ),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              )
-            else if (!widget.artist.isAvailable)
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  'This artist is currently not available for booking.',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+              // Booking Form (only if available and date is available)
+              if (widget.artist.isAvailable && _isDateAvailable)
+                _buildBookingForm()
+              else if (widget.artist.isAvailable && !_isDateAvailable)
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text(
+                    'This artist is not available on the selected date. You can ask for availability or choose another date.',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
+                )
+              else if (!widget.artist.isAvailable)
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text(
+                    'This artist is currently not available for booking.',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: (widget.artist.isAvailable && _isDateAvailable) ? _buildBottomBar() : null,

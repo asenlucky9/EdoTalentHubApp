@@ -83,18 +83,31 @@ class _ArtistDetailScreenState extends ConsumerState<ArtistDetailScreen>
                 fit: StackFit.expand,
                 children: [
                   // Artist Image
-                  Image.network(
-                    _artist.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: Colors.grey[300],
-                      child: Icon(
-                        Icons.music_note,
-                        color: Colors.grey[600],
-                        size: 80,
-                      ),
-                    ),
-                  ),
+                  _artist.imageUrl.startsWith('http')
+                      ? Image.network(
+                          _artist.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: Colors.grey[300],
+                            child: Icon(
+                              Icons.music_note,
+                              color: Colors.grey[600],
+                              size: 80,
+                            ),
+                          ),
+                        )
+                      : Image.asset(
+                          _artist.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: Colors.grey[300],
+                            child: Icon(
+                              Icons.music_note,
+                              color: Colors.grey[600],
+                              size: 80,
+                            ),
+                          ),
+                        ),
                   // Gradient Overlay
                   Container(
                     decoration: BoxDecoration(
@@ -504,84 +517,23 @@ class _ArtistDetailScreenState extends ConsumerState<ArtistDetailScreen>
   }
 
   Widget _buildVideosTab() {
-    // Mock video thumbnails (replace with real video widgets later)
-    final List<String> videoThumbs = [
-      'https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg',
-      'https://img.youtube.com/vi/3JZ_D3ELwOQ/0.jpg',
-      'https://img.youtube.com/vi/L_jWHffIx5E/0.jpg',
-    ];
-    return SingleChildScrollView(
+    if (_artist.videoUrls.isEmpty) {
+      return Center(child: Text('No videos available.'));
+    }
+    return ListView.builder(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Videos',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppConfig.textPrimaryColor,
-            ),
+      itemCount: _artist.videoUrls.length,
+      itemBuilder: (context, index) {
+        final url = _artist.videoUrls[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Container(
+            height: 200,
+            color: Colors.black12,
+            child: Center(child: Text('Video unavailable')),
           ),
-          const SizedBox(height: 16),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 1.3,
-            ),
-            itemCount: videoThumbs.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Open video player (not implemented)')),
-                  );
-                },
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        videoThumbs[index],
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          color: Colors.grey[300],
-                          child: Icon(
-                            Icons.videocam,
-                            color: Colors.grey[600],
-                            size: 40,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.play_arrow, color: Colors.white, size: 32),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

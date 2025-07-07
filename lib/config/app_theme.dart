@@ -94,7 +94,7 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppConfig.surfaceColor,
         elevation: 2,
         shadowColor: Colors.black.withValues(alpha: 0.1),
@@ -280,7 +280,7 @@ class AppTheme {
       scaffoldBackgroundColor: AppConfig.backgroundColor,
 
       // Dialog Theme
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: AppConfig.surfaceColor,
         elevation: 8,
         shape: RoundedRectangleBorder(
@@ -378,7 +378,7 @@ class AppTheme {
       ),
 
       // Tab Bar Theme
-      tabBarTheme: const TabBarTheme(
+      tabBarTheme: const TabBarThemeData(
         labelColor: AppConfig.primaryColor,
         unselectedLabelColor: AppConfig.textSecondaryColor,
         indicatorColor: AppConfig.primaryColor,

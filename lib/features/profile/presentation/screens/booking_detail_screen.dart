@@ -90,136 +90,139 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
-        child: ListView(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Artist'),
-              subtitle: Text(booking['artist'] ?? ''),
-            ),
-            ListTile(
-              leading: const Icon(Icons.event),
-              title: const Text('Date'),
-              subtitle: Text(booking['date'] ?? ''),
-            ),
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: const Text('Location'),
-              subtitle: Text(booking['location'] ?? ''),
-            ),
-            ListTile(
-              leading: const Icon(Icons.attach_money),
-              title: const Text('Price'),
-              subtitle: Text(booking['price'] ?? ''),
-            ),
-            ListTile(
-              leading: const Icon(Icons.phone),
-              title: const Text('Artist Contact'),
-              subtitle: Text(booking['contact'] ?? ''),
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Status'),
-              subtitle: Text(booking['status'] ?? ''),
-            ),
-            if (booking['notes'] != null && booking['notes']!.isNotEmpty)
+        child: Scrollbar(
+          thumbVisibility: true,
+          child: ListView(
+            children: [
               ListTile(
-                leading: const Icon(Icons.note),
-                title: const Text('Notes'),
-                subtitle: Text(booking['notes']!),
+                leading: const Icon(Icons.person),
+                title: const Text('Artist'),
+                subtitle: Text(booking['artist'] ?? ''),
               ),
-            if (booking['status'] == 'Completed')
               ListTile(
-                leading: const Icon(Icons.star),
-                title: const Text('Rating'),
-                subtitle: _rating != null
-                    ? Row(
-                        children: [
-                          ...List.generate(_rating!.round(), (i) => const Icon(Icons.star, color: Colors.amber, size: 20)),
-                          ...List.generate(5 - _rating!.round(), (i) => const Icon(Icons.star_border, color: Colors.amber, size: 20)),
-                          const SizedBox(width: 8),
-                          Text('${_rating!.toStringAsFixed(1)}/5'),
-                        ],
-                      )
-                    : const Text('Not rated yet'),
+                leading: const Icon(Icons.event),
+                title: const Text('Date'),
+                subtitle: Text(booking['date'] ?? ''),
               ),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (booking['status'] != 'Cancelled' && booking['status'] != 'Completed')
-                  ElevatedButton(
-                    onPressed: _cancelBooking,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppConfig.errorColor,
-                      foregroundColor: Colors.white,
+              ListTile(
+                leading: const Icon(Icons.location_on),
+                title: const Text('Location'),
+                subtitle: Text(booking['location'] ?? ''),
+              ),
+              ListTile(
+                leading: const Icon(Icons.attach_money),
+                title: const Text('Price'),
+                subtitle: Text(booking['price'] ?? ''),
+              ),
+              ListTile(
+                leading: const Icon(Icons.phone),
+                title: const Text('Artist Contact'),
+                subtitle: Text(booking['contact'] ?? ''),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('Status'),
+                subtitle: Text(booking['status'] ?? ''),
+              ),
+              if (booking['notes'] != null && booking['notes']!.isNotEmpty)
+                ListTile(
+                  leading: const Icon(Icons.note),
+                  title: const Text('Notes'),
+                  subtitle: Text(booking['notes']!),
+                ),
+              if (booking['status'] == 'Completed')
+                ListTile(
+                  leading: const Icon(Icons.star),
+                  title: const Text('Rating'),
+                  subtitle: _rating != null
+                      ? Row(
+                          children: [
+                            ...List.generate(_rating!.round(), (i) => const Icon(Icons.star, color: Colors.amber, size: 20)),
+                            ...List.generate(5 - _rating!.round(), (i) => const Icon(Icons.star_border, color: Colors.amber, size: 20)),
+                            const SizedBox(width: 8),
+                            Text('${_rating!.toStringAsFixed(1)}/5'),
+                          ],
+                        )
+                      : const Text('Not rated yet'),
+                ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (booking['status'] != 'Cancelled' && booking['status'] != 'Completed')
+                    ElevatedButton(
+                      onPressed: _cancelBooking,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppConfig.errorColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Cancel Booking'),
                     ),
-                    child: const Text('Cancel Booking'),
-                  ),
-                if (booking['status'] == 'Completed' && booking['rated'] != 'true')
-                  const SizedBox(width: 16),
-                if (booking['status'] == 'Completed' && booking['rated'] != 'true')
-                  ElevatedButton(
-                    onPressed: _showRatingDialog,
+                  if (booking['status'] == 'Completed' && booking['rated'] != 'true')
+                    const SizedBox(width: 16),
+                  if (booking['status'] == 'Completed' && booking['rated'] != 'true')
+                    ElevatedButton(
+                      onPressed: _showRatingDialog,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppConfig.primaryColor,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Rate Booking'),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RebookScreen(artist: booking['artist'] ?? ''),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.repeat),
+                    label: const Text('Rebook'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppConfig.primaryColor,
                       foregroundColor: Colors.white,
                     ),
-                    child: const Text('Rate Booking'),
                   ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RebookScreen(artist: booking['artist'] ?? ''),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.repeat),
-                  label: const Text('Rebook'),
+                  const SizedBox(width: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MessageArtistScreen(artist: booking['artist'] ?? ''),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.message),
+                    label: const Text('Message Artist'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppConfig.secondaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppConfig.primaryColor,
                     foregroundColor: Colors.white,
                   ),
+                  child: const Text('Back'),
                 ),
-                const SizedBox(width: 16),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MessageArtistScreen(artist: booking['artist'] ?? ''),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.message),
-                  label: const Text('Message Artist'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppConfig.secondaryColor,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppConfig.primaryColor,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text('Back'),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
